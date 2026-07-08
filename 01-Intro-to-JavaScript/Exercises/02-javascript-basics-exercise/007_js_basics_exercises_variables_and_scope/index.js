@@ -1,5 +1,4 @@
 // # Variables and Scope
-console.log('hello');
 
 // #### Background:
 
@@ -17,6 +16,36 @@ console.log('hello');
 //     - Inside a function, declare another `var` variable with the same name but different value and log it within the function.
 //     - Call your function.
 //     - Log your global variable. Did it change? No! This is function scope!
+
+// # Global Scope und Function Scope
+// * Das Lernziel ist Sichtbarkeit: Diese Variable existiert außerhalb von Funktionen und Blöcken.
+var myVar = 'I am global';
+
+function testScope() {
+  // * Diese gleichnamige `var` verdeckt die globale Variable nur innerhalb der Funktion.
+  var myVar = 'I am function-scoped';
+  console.log('Inside function:', myVar);
+}
+
+console.log('Vor Funktionsaufruf:', myVar);
+testScope();
+console.log('Nach Funktionsaufruf:', myVar);
+
+// # Block Scope mit let und const
+// * `let` und `const` sind nur innerhalb dieses Blocks sichtbar und schützen so vor Namenskonflikten.
+if (true) {
+  let blockLet = 'I am block-scoped (let)';
+  const blockConst = 'I am also block-scoped (const)';
+  // ! `var` ignoriert Block Scope und überschreibt hier die äußere `var`-Bindung.
+  var myVar = 'I was re-declared in a block';
+  console.log('Im Block:', blockLet);
+  console.log('Im Block:', blockConst);
+  console.log('Im Block:', myVar);
+}
+
+// # Auswirkung von var außerhalb des Blocks
+// * Dieser Log zeigt den Gotcha: Der Block hat `myVar` verändert, obwohl er optisch wie ein eigener Bereich wirkt.
+console.log('`var` außerhalb des Blocks:', myVar);
 
 // 2.  **Block Scope with `let` and `const`**:
 
