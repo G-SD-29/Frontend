@@ -108,4 +108,8 @@ console.log('Satz als Array:', splitString);
 // * Nach dem split können einzelne Wörter wie Array-Elemente per Index ersetzt werden.
 splitString[4] = 'Gandalf';
 console.log('Veränderter Satz:', splitString.join(' '));
+
+// * replace ist die String-Alternative, wenn direkt im Text ersetzt werden soll.
+const replacedSentence = sentence.replace('Renke', 'Gandalf');
+console.log('Veränderter Satz mit replace:', replacedSentence);
 console.groupEnd();
