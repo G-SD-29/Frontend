@@ -1,0 +1,66 @@
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background-color: darkslategray;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+	text-align: center;
+	color: whitesmoke;
+	padding: 2rem;
+	font-size: 4rem;
+	margin-bottom: 1rem;
+}
+
+main {
+	margin: 0 auto;
+	min-width: 200px;
+	max-width: 80vw;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+aside {
+	width: 50%;
+	margin: 2rem auto;
+	font-size: 1rem;
+	text-align: end;
+	color: whitesmoke;
+}
+
+article {
+	padding: 1rem;
+	background-color: lightcoral;
+	margin: 0.5rem;
+}
+
+form {
+	margin: 0 auto;
+	width: 300px;
+	display: grid;
+	background-color: lightgreen;
+	padding: 3rem;
+	margin-top: 2rem;
+}
+
+input {
+	padding: 0.25rem;
+}
+
+label {
+	margin-bottom: 0.25rem;
+}
+
+button {
+	margin-top: 0.25rem;
+	font-size: 1.5rem;
+}
+
+.highlight {
+	background-color: green;
+}

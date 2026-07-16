@@ -6,10 +6,11 @@ const firstPerson = {
 	location: {
 		city: 'berlin',
 	},
-	greet: () => console.log('hey'),
+	// greet: () => console.log('hey'),
 	email: 'karl@example.org',
 };
 
+console.group('\naccess');
 // Auf Werte im Objekt zugreifen
 const myKey = 'firstName';
 
@@ -19,6 +20,7 @@ console.log(firstPerson[myKey]);
 
 console.log(firstPerson.friends[0]);
 console.log(firstPerson.location.city);
+console.groupEnd();
 
 // Werte überschreiben oder hinzufügen
 firstPerson.firstName = 'Karla';
@@ -26,7 +28,7 @@ firstPerson.isMarried = true;
 console.log(firstPerson.firstName);
 
 // Methode des Objekts aufrufen
-firstPerson.greet();
+// firstPerson.greet();
 
 // Key-Value Paar lösen
 // delete firstPerson.location;
@@ -58,14 +60,15 @@ console.log(Object.entries(firstPerson));
 
 // Objekte kopieren
 // const secondPerson = firstPerson;
+const secondPerson = structuredClone(firstPerson);
 // spread operator
-const secondPerson = { ...firstPerson, age: 100, pets: ['dog', 'cat'] };
+// const secondPerson = { ...firstPerson, age: 100, pets: ['dog', 'cat'] };
 
 secondPerson.firstName = 'John';
 console.log(secondPerson.firstName);
 console.log(firstPerson.firstName);
 
-firstPerson.location.city = 'madrid';
+firstPerson.location.city = 'cologne';
 
 console.log(firstPerson.location.city);
 console.log(firstPerson.location.city);
@@ -83,3 +86,11 @@ function addNumbers(a, b, ...numbers) {
 }
 
 addNumbers(1, 2, 3, 4, 5, 6);
+
+const myArray = [1, 2, 3, 4, 5];
+const mySecondArray = structuredClone(myArray);
+
+myArray[0] = 20;
+
+console.log(myArray);
+console.log(mySecondArray);
