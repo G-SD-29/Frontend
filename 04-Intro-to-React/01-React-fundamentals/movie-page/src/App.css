@@ -1,0 +1,129 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  font-family: system-ui, sans-serif;
+}
+
+.hero {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  color: #7c3aed;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.movie-card {
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgb(15 23 42 / 0.08);
+}
+
+.movie-card__meta {
+  color: #666;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.site-logo {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 16px;
+}
+
+.site-header a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-header a:hover {
+  color: #7c3aed;
+}
+
+.movie-card--watched {
+  background-color: lightblue;
+}
+
+.badge {
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ergänzende Stylings */
+.movie-card button {
+  width: fit-content;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #7c3aed;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.movie-card button:hover {
+  background: #6d28d9;
+}
+
+.search-form,
+.add-movie-form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.search-form label,
+.add-movie-form label {
+  font-weight: 700;
+}
+
+.search-form input,
+.add-movie-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+}
+
+.add-movie-form button {
+  width: fit-content;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #7c3aed;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-movie-form button:hover {
+  background: #6d28d9;
+}
