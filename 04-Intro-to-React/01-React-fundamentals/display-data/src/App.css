@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.app {
+  display: grid;
+  min-height: 100vh;
+  /* Zentriert die Student-Card auf der Seite. */
+  place-items: center;
+  padding: 2rem;
+  background: #eef2f7;
+}
+
+.student-card {
+  width: min(100%, 520px);
+  padding: 2rem;
+  border: 1px solid #d8e0ec;
+  border-radius: 8px;
+  background: #ffffff;
+  /* Schatten und Hintergrund lassen das Element wie eine Card wirken. */
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
+}
+
+.student-card__image {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin-bottom: 1.5rem;
+  border: 4px solid #dbeafe;
+  border-radius: 50%;
+  /* Das Bild bleibt sauber zugeschnitten, auch wenn die Quelle rechteckig ist. */
+  object-fit: cover;
+}
+
+.student-card__header {
+  margin-bottom: 1.75rem;
+}
+
+.student-card__label {
+  margin: 0 0 0.5rem;
+  color: #2563eb;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.student-card h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 2rem;
+}
+
+.student-card__details {
+  display: grid;
+  /* Zwei gleich breite Spalten für die Label-Wert-Paare. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.student-card__details div {
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.student-card dt {
+  margin-bottom: 0.35rem;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.student-card dd {
+  margin: 0;
+  color: #172033;
+  font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  .app {
+    padding: 1.25rem;
+  }
+
+  .student-card {
+    padding: 1.5rem;
+  }
+
+  .student-card__details {
+    /* Auf kleinen Screens stehen die Details untereinander. */
+    grid-template-columns: 1fr;
+  }
+}
