@@ -1,0 +1,99 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #101827;
+  color: #e5edf7;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 48px 24px;
+}
+
+.hero {
+  max-width: 860px;
+  margin: 0 auto 32px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #38bdf8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 3rem;
+}
+
+.hero p {
+  margin: 12px 0 0;
+  color: #aebed1;
+  font-size: 1.1rem;
+}
+
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.counter-card {
+  padding: 22px;
+  border: 1px solid #2b3a50;
+  border-radius: 10px;
+  background: #162235;
+}
+
+.counter-card h2 {
+  margin: 0;
+  color: #c7d2fe;
+  font-size: 1rem;
+}
+
+.counter-value {
+  margin: 18px 0;
+  font-size: 3.5rem;
+  font-weight: 900;
+}
+
+.counter-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.counter-actions button {
+  min-height: 38px;
+  border: 1px solid #38506f;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e5edf7;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.counter-actions button:hover {
+  border-color: #38bdf8;
+  background: #1f3654;
+}
+
+@media (max-width: 720px) {
+  .counter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+  }
+}
