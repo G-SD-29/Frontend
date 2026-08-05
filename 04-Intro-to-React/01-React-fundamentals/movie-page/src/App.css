@@ -5,29 +5,6 @@
   font-family: system-ui, sans-serif;
 }
 
-.hero {
-  margin-bottom: 32px;
-}
-
-.eyebrow {
-  color: #7c3aed;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.movie-card {
-  padding: 24px;
-  border: 1px solid #ddd;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 12px 30px rgb(15 23 42 / 0.08);
-}
-
-.movie-card__meta {
-  color: #666;
-}
-
 .site-header {
   display: flex;
   align-items: center;
@@ -57,36 +34,24 @@
   color: #7c3aed;
 }
 
-.movie-card--watched {
-  background-color: lightblue;
+.hero {
+  margin-bottom: 32px;
 }
 
-.badge {
-  display: inline-block;
-  width: fit-content;
-  margin-bottom: 12px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #ede9fe;
-  color: #5b21b6;
-  font-size: 0.8rem;
+.eyebrow {
+  color: #7c3aed;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-/* ergänzende Stylings */
-.movie-card button {
-  width: fit-content;
-  padding: 10px 14px;
-  border: 0;
-  border-radius: 999px;
-  background: #7c3aed;
+.movie-stats {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: #111827;
   color: #ffffff;
   font-weight: 700;
-  cursor: pointer;
-}
-
-.movie-card button:hover {
-  background: #6d28d9;
 }
 
 .search-form,
@@ -105,12 +70,45 @@
   font-weight: 700;
 }
 
+.add-movie-form label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .search-form input,
 .add-movie-form input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
+}
+
+.add-movie-form input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.filter-options input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
 }
 
 .add-movie-form button {
@@ -126,4 +124,80 @@
 
 .add-movie-form button:hover {
   background: #6d28d9;
+}
+
+.movie-card button {
+  width: fit-content;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #7c3aed;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.movie-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.movie-card button:hover {
+  background: #6d28d9;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgb(15 23 42 / 0.08);
+}
+
+.movie-card--featured {
+  border-color: #c4b5fd;
+}
+
+.movie-card--watched {
+  background: #f5f3ff;
+}
+
+.movie-card__poster {
+  width: 100%;
+  max-height: 320px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: #f3f4f6;
+  object-fit: cover;
+}
+
+.movie-card__meta {
+  color: #666;
+}
+
+.badge {
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
 }

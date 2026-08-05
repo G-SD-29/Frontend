@@ -7,9 +7,11 @@ function SearchForm({
   function handleSearchChange(event) {
     onQueryChange(event.target.value);
   }
+
   function handleWatchedChange(event) {
     onShowWatchedOnlyChange(event.target.checked);
   }
+
   return (
     <form className="search-form">
       <label htmlFor="movie-search">Search movies</label>
@@ -20,15 +22,17 @@ function SearchForm({
         placeholder="Search by title"
         value={query}
         onChange={handleSearchChange}
-      ></input>
-      <label>
-        <input
-          type="checkbox"
-          checked={showWatchedOnly}
-          onChange={handleWatchedChange}
-        />
-        Watched movies
-      </label>
+      />
+      <div className="filter-options">
+        <label>
+          <input
+            type="checkbox"
+            checked={showWatchedOnly}
+            onChange={handleWatchedChange}
+          />
+          Only watched movies
+        </label>
+      </div>
     </form>
   );
 }

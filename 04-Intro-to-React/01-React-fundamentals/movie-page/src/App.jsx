@@ -1,43 +1,141 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AddMovieForm from "./components/AddMovieForm.jsx";
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
 import MovieList from "./components/MovieList.jsx";
 import SearchForm from "./components/SearchForm.jsx";
-import { movies as initialMovies } from "./data/movies.js";
 import "./App.css";
-import AddMovieForm from "./components/AddMovieForm.jsx";
 
 function App() {
-  // const watchedMovies = movies.filter((movie) => movie.watched);
-  // const topRatedMovies = movies.filter((movie) => movie.rating >= 8);
-  // const sortedTopRatedMovies = [...topRatedMovies].sort((a, b) => {
-  //   return b.rating - a.rating;
-  // });
-
-  const [savedCount, setSavedCount] = useState(0);
+  // movies enthält die aktuelle Ergebnisliste aus der API.
+  const [movies, setMovies] = useState([]);
   const [selectedMovieTitle, setSelectedMovieTitle] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("batman");
   const [showWatchedOnly, setShowWatchedOnly] = useState(false);
-  const [movies, setMovies] = useState(initialMovies);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  // page und totalResults gehören zusammen zur OMDb-Pagination.
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
-  const visibleMovies = movies
+  // canSearch ist abgeleitet und verhindert Requests für zu kurze Suchbegriffe.
+  const canSearch = searchQuery.trim().length >= 3;
+  const moviesForDisplay = canSearch ? movies : [];
+
+  const filteredMovies = moviesForDisplay
     .filter((movie) => {
       return movie.title.toLowerCase().includes(searchQuery.toLowerCase());
     })
     .filter((movie) => {
-      if (!showWatchedOnly) {
-        return true;
-      }
-      return movie.watched;
+      return !showWatchedOnly || movie.watched;
     });
 
-  function handleSaveMovie(movieId) {
-    const selectedMovie = movies.find((movie) => movie.id === movieId);
-    setSavedCount((currentCount) => currentCount + 1);
-    setSelectedMovieTitle(selectedMovie.title);
-    console.log("Save count:", savedCount);
-    console.log("Save movie:", movieId);
-  }
+  const visibleMovies = [...filteredMovies].sort((a, b) => {
+    return b.rating - a.rating;
+  });
+
+  const visibleMovieCount = visibleMovies.length;
+  // OMDb liefert maximal 10 Suchergebnisse pro Seite.
+  const totalPages = Math.ceil(totalResults / 10);
+  const hasPagination = canSearch && totalPages > 1;
+  const canGoPrevious = page > 1;
+  const canGoNext = page < totalPages;
+
+  useEffect(() => {
+    document.title = `${visibleMovieCount} movies visible`;
+  }, [visibleMovieCount]);
+
+  useEffect(() => {
+    if (searchQuery.trim().length < 3) {
+      return;
+    }
+
+    // Jeder Request bekommt einen eigenen Controller.
+    // Cleanup kann genau diesen Request abbrechen.
+    const controller = new AbortController();
+
+    async function fetchMovies() {
+      try {
+        // Ab hier ist die UI im Loading-Zustand.
+        setIsLoading(true);
+        setErrorMessage("");
+
+        const apiKey = import.meta.env.VITE_OMDB_API_KEY;
+
+        if (!apiKey) {
+          setMovies([]);
+          setErrorMessage("Missing OMDb API key.");
+          setTotalResults(0);
+          return;
+        }
+
+        const encodedQuery = encodeURIComponent(searchQuery);
+        const response = await fetch(
+          `https://www.omdbapi.com/?apikey=${apiKey}&s=${encodedQuery}&type=movie&page=${page}`,
+          {
+            signal: controller.signal,
+          },
+        );
+        const data = await response.json();
+
+        if (data.Response === "False") {
+          // OMDb nutzt Response: "False" für fachliche Fehler wie "Movie not found".
+          setMovies([]);
+          setErrorMessage(data.Error);
+          setTotalResults(0);
+          return;
+        }
+
+        // Die API-Daten werden in unser eigenes Movie-Modell übersetzt.
+        const apiMovies = data.Search.map((movie) => {
+          return {
+            id: movie.imdbID,
+            title: movie.Title,
+            year: movie.Year,
+            genre: movie.Type,
+            rating: 0,
+            watched: false,
+            poster: movie.Poster,
+          };
+        });
+
+        setMovies(apiMovies);
+        // totalResults ist ein String in der OMDb Response.
+        setTotalResults(Number(data.totalResults));
+      } catch (error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+
+        setErrorMessage("Could not load movies.");
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    fetchMovies();
+
+    return () => {
+      // Wenn searchQuery oder page sich ändern, wird der alte Request abgebrochen.
+      controller.abort();
+    };
+  }, [searchQuery, page]);
+
+  useEffect(() => {
+    if (!selectedMovieTitle) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setSelectedMovieTitle("");
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [selectedMovieTitle]);
 
   function handleAddMovie(movie) {
     if (movie.title.trim() === "") {
@@ -46,9 +144,9 @@ function App() {
 
     const newMovie = {
       id: crypto.randomUUID(),
-      title: movie.title,
+      title: movie.title.trim(),
       year: movie.year,
-      genre: movie.genre,
+      genre: movie.genre.trim(),
       rating: 0,
       watched: movie.watched,
     };
@@ -56,9 +154,18 @@ function App() {
     setMovies((currentMovies) => {
       return [...currentMovies, newMovie];
     });
+  }
 
-    // AddMovieForm ruft diese Funktion mit einem neuen Movie-Objekt auf
-    console.log("Add movie:", movie);
+  function handleSearchQueryChange(nextQuery) {
+    setSearchQuery(nextQuery);
+    // Eine neue Suche startet immer wieder auf der ersten Seite.
+    setPage(1);
+  }
+
+  function handleSaveMovie(movieId) {
+    const selectedMovie = movies.find((movie) => movie.id === movieId);
+
+    setSelectedMovieTitle(selectedMovie.title);
   }
 
   function handleToggleWatched(movieId) {
@@ -80,19 +187,49 @@ function App() {
     <main className="app">
       <Header />
       <Hero />
-      <p>Saved movies: {savedCount}</p>
-      <p>Last saved: {selectedMovieTitle}</p>
+      {selectedMovieTitle && (
+        <p className="movie-stats">Last saved: {selectedMovieTitle}</p>
+      )}
       <SearchForm
         query={searchQuery}
-        onQueryChange={setSearchQuery}
         showWatchedOnly={showWatchedOnly}
+        onQueryChange={handleSearchQueryChange}
         onShowWatchedOnlyChange={setShowWatchedOnly}
       />
-      <MovieList
-        movies={visibleMovies}
-        onSaveMovie={handleSaveMovie}
-        onToggleWatched={handleToggleWatched}
-      />
+      {canSearch && errorMessage && (
+        <p className="movie-stats">{errorMessage}</p>
+      )}
+      {canSearch && isLoading && (
+        <p className="movie-stats">Loading movies...</p>
+      )}
+      {canSearch && !isLoading && !errorMessage && (
+        <MovieList
+          movies={visibleMovies}
+          onSaveMovie={handleSaveMovie}
+          onToggleWatched={handleToggleWatched}
+        />
+      )}
+      {hasPagination && (
+        <div className="pagination">
+          <button
+            type="button"
+            disabled={!canGoPrevious || isLoading}
+            onClick={() => setPage((currentPage) => currentPage - 1)}
+          >
+            Previous
+          </button>
+          <span>
+            Page {page} of {totalPages}
+          </span>
+          <button
+            type="button"
+            disabled={!canGoNext || isLoading}
+            onClick={() => setPage((currentPage) => currentPage + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
       <AddMovieForm onAddMovie={handleAddMovie} />
     </main>
   );
