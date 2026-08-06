@@ -1,0 +1,1 @@
+export { getDestinationPath } from "./destinationPaths";
